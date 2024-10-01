@@ -7,10 +7,10 @@
 
   outputs = { self, nixpkgs }: let
     pkgs = import nixpkgs {
-      system = "x86_64-linux"; # or "aarch64-linux", depending on your system architecture
+      system = builtins.currentSystem;
     };
 
-    # Define the Python environment
+    # Define the Python environment with PyTorch and other libraries
     pythonEnv = pkgs.python310.withPackages (ps: with ps; [
       pillow
       torch
@@ -18,12 +18,18 @@
     ]);
 
   in {
-    packages.x86_64-linux.image_classifier_app = pkgs.rustPlatform.buildRustPackage {
+    # Define the package output for different architectures (aarch64-darwin and x86_64-linux)
+    packages.${pkgs.system} = pkgs.rustPlatform.buildRustPackage {
       pname = "image_classifier_app";
       version = "0.1.0";
-      
-      # Specify the source of your Rust project
+
+      # Specify the correct source of your Rust project
       src = ./src;
+
+      # Reference the Cargo.lock file to ensure reproducibility
+      cargoLock = {
+        lockFile = ./Cargo.lock;
+      };
 
       # Specify any native build dependencies
       nativeBuildInputs = [
@@ -42,7 +48,8 @@
       '';
     };
 
-    devShell.x86_64-linux = pkgs.mkShell {
+    # Define a devShell for both architectures (aarch64-darwin and x86_64-linux)
+    devShell.${pkgs.system} = pkgs.mkShell {
       nativeBuildInputs = [
         pythonEnv
         pkgs.rustc
