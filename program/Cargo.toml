@@ -1,0 +1,13 @@
+[package]
+name = "program"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+pyo3 = { version = "0.22", features = ["extension-module", "auto-initialize"] }
+rand = "0.8.4"
+
+
+[lib]
+name = "image_program"
+crate-type = ["cdylib"]

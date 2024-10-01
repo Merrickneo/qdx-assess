@@ -23,9 +23,8 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
 
-def classify_image(input_json):
+def classify_image(image_path):
     # Load the image
-    image_path = input_data['image_path']
 
     image = Image.open(image_path)
     
@@ -52,12 +51,12 @@ def classify_image(input_json):
     # Return the result as a JSON string
     return json.dumps(result)
 
-# Example usage
-example_inputs = [
-    {"image_path": "/Users/merrick/Downloads/govtech-assessment/qdx/image_input/cup.jpg"},
-    {"image_path": "/Users/merrick/Downloads/govtech-assessment/qdx/image_input/apple.jpg"}
-]
+# # Example usage
+# example_inputs = [
+#     {"image_path": "/Users/merrick/Downloads/govtech-assessment/qdx/image_input/cup.jpg"},
+#     {"image_path": "/Users/merrick/Downloads/govtech-assessment/qdx/image_input/apple.jpg"}
+# ]
 
-for input_data in example_inputs:
-    input_json = json.dumps(input_data)
-    print(classify_image(input_json))
+# for input_data in example_inputs:
+#     input_json = json.dumps(input_data)
+#     print(classify_image(input_json))
